@@ -1,13 +1,14 @@
 import React from 'react';
 import { StatusBar, Text } from 'react-native';
+
+// TODO: create a global index list for components
 import Container from '../components/Container';
+import Header from '../components/Text';
 
 const Home = () => (
   <Container>
     <StatusBar barStyle="light-content" />
-    <Text>Open up App.js to start working on your app!</Text>
-    <Text>Changes you make will automatically reload.</Text>
-    <Text>Shake your phone to open the developer menu.</Text>
+    <Header fontSize={34}>Today</Header>
   </Container>
 );
 
