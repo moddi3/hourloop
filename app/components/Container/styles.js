@@ -5,7 +5,7 @@ const styles = EStyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#fff', // TODO: make it global
+    backgroundColor: '$white',
     marginHorizontal: 20,
     marginBottom: 0,
     marginTop: StatusBar.currentHeight + 10,
