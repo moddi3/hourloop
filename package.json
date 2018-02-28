@@ -36,6 +36,7 @@
     "prop-types": "^15.6.0",
     "react": "16.2.0",
     "react-native": "0.52.0",
-    "react-native-extended-stylesheet": "^0.8.1"
+    "react-native-extended-stylesheet": "^0.8.1",
+    "react-navigation": "^1.2.1"
   }
 }

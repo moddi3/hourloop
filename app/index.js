@@ -1,6 +1,7 @@
 import React from 'react';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import Home from './screens/Schedule';
+
+import Navigator from './config/routes';
 
 EStyleSheet.build({
   $white: '#fff',
@@ -8,6 +9,6 @@ EStyleSheet.build({
   $darkGray: '#333',
 });
 
-const App = () => <Home />;
+const App = () => <Navigator />;
 
 export default App;
