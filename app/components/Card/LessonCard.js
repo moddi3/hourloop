@@ -16,7 +16,7 @@ class LessonCard extends Component {
       Room: ${data.room},
       StartsAt: '${data.startsAt}',
       Fav: ${data.fav},
-      Tasks: ${data.tasks.length},
+      Tasks:,
     `;
     alert(lesson);
   };
@@ -46,9 +46,9 @@ class LessonCard extends Component {
             }}
           >
             <View>
-              <Text style={{ color: '#fff', fontSize: 8 }}>
+              {/* <Text style={{ color: '#fff', fontSize: 8 }}>
                 You have {lesson.tasks.length} tasks
-              </Text>
+              </Text> */}
               <LessonStart time={lesson.startsAt} />
             </View>
             <LessonLocation place="302" />
@@ -126,7 +126,7 @@ LessonTeacher.propTypes = {
 };
 
 IsFavourite.propTypes = {
-  status: PropTypes.bool,
+  status: PropTypes.number,
 };
 
 LessonStart.propTypes = {

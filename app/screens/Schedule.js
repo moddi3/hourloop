@@ -1,42 +1,101 @@
 import React, { Component } from 'react';
-import { ScrollView, View, StatusBar } from 'react-native';
+import { ScrollView, View, StatusBar, RefreshControl } from 'react-native';
+import { Button } from 'react-native-elements';
+import moment from 'moment';
+
+import { SQLite } from 'expo';
 
 // TODO: create a global index list for components
 import Container from '../components/Container';
-import Header from '../components/Text';
+import HeaderText from '../components/Text';
 import Date from '../components/Date';
 import LessonCard from '../components/Card';
 
-import scheduleData from '../data/schedule';
+const db = SQLite.openDatabase('hourloop22.db');
 
-const colors = [
-  '#7A36B1',
-  '#C6262E',
-  '#F37329',
-  '#485A6C',
-  '#f9c440',
-  '#68b723',
-  '#715344',
-  '#abacae',
-];
+db.transaction((tx) => {
+  tx.executeSql(`create table if not exists lessons 
+  (lesson_id integer primary key not null, title text, teacher text, room integer, startsAt text, fav integer);`);
+});
+
+const colors = ['#7A36B1', '#C6262E', '#F37329', '#485A6C', '#f9c440', '#68b723', '#715344'];
 
 class Home extends Component {
   state = {
-    lessons: null,
+    lessons: [],
+    refreshing: false,
   };
 
   componentWillMount() {
-    this.setState({ lessons: scheduleData });
+    this.update();
   }
+
+  onRefresh = () => {
+    this.setState({ refreshing: true });
+    this.update();
+  };
+
+  update = () => {
+    db.transaction((tx) => {
+      tx.executeSql('select * from lessons;', [], (_, { rows: { _array } }) => {
+        this.setState({ lessons: _array, refreshing: false });
+        console.log(_array);
+      });
+    });
+  };
+
+  handleError = (error) => {
+    throw new Error(error);
+  };
+
+  handleAdd = () => {
+    db.transaction(
+      (tx) => {
+        tx.executeSql(
+          'insert into lessons (title, teacher, room, startsAt, fav) values(?, ?, ?, ?, ?);',
+          ['Algebra', 'Danilova', 302, '8:30 AM', 1],
+        );
+      },
+      this.handleError,
+      this.update,
+    );
+  };
+
+  handleDrop = () => {
+    db.transaction(
+      (tx) => {
+        tx.executeSql('delete from lessons');
+      },
+      this.handleError,
+      this.update,
+    );
+  };
+
   render() {
-    const { lessons } = this.state;
+    const { lessons, refreshing } = this.state;
+    const date = moment().format('dddd');
+
+    const lessonsList = lessons.map((item, index) => (
+      <LessonCard key={item.lesson_id} lesson={item} color={colors[index]}>
+        {item}
+      </LessonCard>
+    ));
 
     return (
       <Container>
         <StatusBar barStyle="light-content" />
         <Date />
-        <Header fontSize={34}>Schedule</Header>
-        <ScrollView showsVerticalScrollIndicator={false} overScrollMode="never">
+        <HeaderText fontSize={34}>{date}</HeaderText>
+        <View style={{ flexDirection: 'row' }}>
+          <Button text="Add" onPress={this.handleAdd} />
+          <Button text="Drop" onPress={this.handleDrop} />
+        </View>
+
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          overScrollMode="never"
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} />}
+        >
           <View
             style={{
               flexDirection: 'column',
@@ -44,19 +103,7 @@ class Home extends Component {
               marginTop: 38,
             }}
           >
-            {/* {lessons.map(item =>
-              Object.keys(item).map(day => (
-                <View key={day.toString()}>
-                  {item[day].map((lesson, index) => (
-                    <LessonCard key={lesson.id} lesson={lesson} color={colors[index]} />
-                  ))}
-                </View>
-              )))} */}
-            {lessons.map((item, index) => (
-              <LessonCard key={item.id} lesson={item} color={colors[index]}>
-                {item}
-              </LessonCard>
-            ))}
+            {lessonsList}
           </View>
         </ScrollView>
       </Container>
