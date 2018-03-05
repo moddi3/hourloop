@@ -1,20 +1,28 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { Font } from 'expo';
 import PropTypes from 'prop-types';
 import { Text } from 'react-native';
 
 import styles from './styles';
 
-const Header = ({ children, fontSize = 20, color }) => {
-  const headerStyles = [styles.header];
-  if (fontSize) {
-    headerStyles.push({ fontSize });
-  }
-  if (color) {
-    headerStyles.push({ color });
-  }
+class Header extends Component {
+  render() {
+    const { children, fontSize = 20, color } = this.props;
 
-  return <Text style={headerStyles}>{children}</Text>;
-};
+    const headerStyles = [styles.header];
+    if (fontSize) {
+      headerStyles.push({ fontSize });
+    }
+    if (color) {
+      headerStyles.push({ color });
+    }
+    return <Text style={[headerStyles, { fontFamily: 'circular-bold' }]}>{children}</Text>;
+
+    // return this.state.fontLoaded ? (
+    //   <Text style={[headerStyles, { fontFamily: 'circular-black' }]}>{children}</Text>
+    // ) : null;
+  }
+}
 
 Header.propTypes = {
   children: PropTypes.string,
