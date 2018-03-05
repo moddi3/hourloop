@@ -70,7 +70,7 @@ const LessonTeacher = ({ name }) => (
     style={{
       color: '#fff',
       fontSize: 13,
-      fontWeight: '100',
+      fontFamily: 'circular-regular',
     }}
   >
     {name}
@@ -89,7 +89,7 @@ const LessonStart = ({ time }) => (
     style={{
       color: '#fff',
       fontSize: 13,
-      fontWeight: '700',
+      fontFamily: 'circular-medium',
     }}
   >
     {time}
@@ -103,7 +103,7 @@ const LessonLocation = ({ place }) => (
       style={{
         color: '#fff',
         fontSize: 15,
-        fontWeight: '200',
+        fontFamily: 'circular-regular',
         marginLeft: 3,
       }}
     >
