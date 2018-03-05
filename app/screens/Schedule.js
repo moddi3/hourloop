@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { ScrollView, View, StatusBar, RefreshControl } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Ionicons } from '@expo/vector-icons';
+import ActionButton from 'react-native-action-button';
 import moment from 'moment';
-
 import { SQLite } from 'expo';
 
 // TODO: create a global index list for components
 import Container from '../components/Container';
-import HeaderText from '../components/Text';
+import Header from '../components/Text';
 import Date from '../components/Date';
 import LessonCard from '../components/Card';
 
@@ -23,7 +23,7 @@ const colors = ['#7A36B1', '#C6262E', '#F37329', '#485A6C', '#f9c440', '#68b723'
 class Home extends Component {
   state = {
     lessons: [],
-    refreshing: false,
+    refreshing: true,
   };
 
   componentWillMount() {
@@ -84,12 +84,14 @@ class Home extends Component {
     return (
       <Container>
         <StatusBar barStyle="light-content" />
-        <Date />
-        <HeaderText fontSize={34}>{date}</HeaderText>
-        <View style={{ flexDirection: 'row' }}>
-          <Button text="Add" onPress={this.handleAdd} />
-          <Button text="Drop" onPress={this.handleDrop} />
-        </View>
+        <ActionButton
+          buttonColor="#3689E6"
+          style={{ zIndex: 1 }}
+          // position="center"
+          fixNativeFeedbackRadius
+          onPress={this.handleAdd}
+          onLongPress={this.handleDrop}
+        />
 
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -97,10 +99,17 @@ class Home extends Component {
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} />}
         >
           <View
+            style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}
+          >
+            <Header>{date}</Header>
+            <Date />
+          </View>
+
+          <View
             style={{
               flexDirection: 'column',
               alignItems: 'flex-end',
-              marginTop: 38,
+              // marginTop: 38,
             }}
           >
             {lessonsList}

@@ -10,7 +10,7 @@ const styles = EStyleSheet.create({
     borderRadius: 2,
     minWidth: '100%',
     // width: 260,
-    height: 110,
+    height: 95,
     paddingVertical: 10,
     paddingHorizontal: 15,
   },

@@ -4,7 +4,8 @@ const styles = EStyleSheet.create({
   text: {
     color: '$gray',
     fontSize: 10,
-    fontWeight: '400',
+    fontFamily: 'circular-medium',
+    marginVertical: 20,
   },
 });
 

@@ -4,14 +4,17 @@ import { View } from 'react-native';
 
 import styles from './styles';
 
-const Container = ({ children, ...rest }) => (
-  <View style={styles.container} {...rest}>
-    {children}
-  </View>
-);
+const Container = ({ children, paddingHorizontal = 10 }) => {
+  const containerStyles = [styles.container];
+  if (paddingHorizontal) {
+    containerStyles.push({ paddingHorizontal });
+  }
+  return <View style={containerStyles}>{children}</View>;
+};
 
 Container.propTypes = {
   children: PropTypes.any,
+  paddingHorizontal: PropTypes.number,
 };
 
 export default Container;
