@@ -10,7 +10,7 @@ const Date = class Date extends Component {
   };
 
   componentWillMount() {
-    const date = moment().format('dddd, MMMM D');
+    const date = moment().format('MMMM D');
     this.setState({ date });
   }
 
