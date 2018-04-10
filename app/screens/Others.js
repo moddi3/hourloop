@@ -53,10 +53,17 @@ class Others extends Component {
 
   update = () => {
     db.transaction((tx) => {
-      tx.executeSql(`select * from ${this.props.type};`, [], (_, { rows: { _array } }) => {
-        this.setState({ items: _array, refreshing: false });
-        console.log(_array);
-      });
+      if (this.props.type === 'subjects') {
+        tx.executeSql('select distinct title from lessons;', [], (_, { rows: { _array } }) => {
+          this.setState({ items: _array, refreshing: false });
+          console.log(_array);
+        });
+      } else {
+        tx.executeSql('select distinct teacher from lessons;', [], (_, { rows: { _array } }) => {
+          this.setState({ items: _array, refreshing: false });
+          console.log(_array);
+        });
+      }
     });
   };
 
@@ -108,14 +115,14 @@ class Others extends Component {
   render() {
     const { type } = this.props;
     const { items, refreshing } = this.state;
-
+    // console.log(items);
     const subjectsList =
       items.length > 0 ? (
         <List containerStyle={{ marginBottom: 20 }}>
           {items.map(item => (
             <ListItem
-              key={item.id}
-              title={item.title || item.name}
+              key={item.title || item.teacher}
+              title={item.title || item.teacher}
               subtitle={
                 item.title && (
                   <View
