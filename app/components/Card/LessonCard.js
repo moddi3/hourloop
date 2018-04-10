@@ -22,17 +22,20 @@ class LessonCard extends Component {
   };
 
   render() {
-    const { lesson, color = '#abacae' } = this.props;
+    const {
+      lesson, color = '#abacae', onPress, onLongPress,
+    } = this.props;
 
     const cardStyles = [styles.card];
 
     if (color) cardStyles.push({ backgroundColor: color });
 
     return (
-      <TouchableHighlight onPress={() => this.handlePress(lesson)} style={styles.container}>
+      <TouchableHighlight onPress={onPress} onLongPress={onLongPress} style={styles.container}>
         <View style={cardStyles}>
           <View style={[styles.row, { justifyContent: 'space-between' }]}>
             <LessonTitle title={lesson.title} />
+            {/* <Text style={{ fontFamily: 'circular-bold', color: '#fff' }}>{lesson.day}</Text> */}
             <IsFavourite status={lesson.fav} />
           </View>
           <LessonTeacher name={lesson.teacher} />
@@ -51,7 +54,7 @@ class LessonCard extends Component {
               </Text> */}
               <LessonStart time={lesson.startsAt} />
             </View>
-            <LessonLocation place="302" />
+            <LessonLocation place={lesson.room} />
           </View>
         </View>
       </TouchableHighlight>
@@ -115,6 +118,8 @@ const LessonLocation = ({ place }) => (
 LessonCard.propTypes = {
   lesson: PropTypes.object,
   color: PropTypes.string,
+  onLongPress: PropTypes.func,
+  onPress: PropTypes.func.isRequired,
 };
 
 LessonTitle.propTypes = {
@@ -134,7 +139,7 @@ LessonStart.propTypes = {
 };
 
 LessonLocation.propTypes = {
-  place: PropTypes.string,
+  place: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export default LessonCard;

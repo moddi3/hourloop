@@ -1,5 +1,15 @@
 {
   "expo": {
-    "sdkVersion": "25.0.0"
+    "name": "Hourloop",
+    "icon": "./app/assets/icon.png",
+    "version": "0.1.0",
+    "slug": "hourloop",
+    "sdkVersion": "25.0.0",
+    "ios": {
+      "bundleIdentifier": "com.moddi3io.hourloop"
+    },
+    "android": {
+      "package": "com.moddi3io.hourloop"
+    }
   }
 }

@@ -7,6 +7,8 @@ import Navigator from './config/routes';
 
 EStyleSheet.build({
   $white: '#fff',
+  $border: '#e2e2e2',
+  $lightGray: '#ededed',
   $gray: '#666',
   $darkGray: '#333',
 });
@@ -21,6 +23,9 @@ class App extends Component {
       'circular-medium': require('./assets/fonts/Circular-Medium.otf'),
       'circular-bold': require('./assets/fonts/Circular-Bold.otf'),
       'circular-black': require('./assets/fonts/Circular-Black.otf'),
+      // 'arial-regular': require('./assets/fonts/arial.ttf'),
+      // 'arial-bold': require('./assets/fonts/arialbd.ttf'),
+      // 'arial-black': require('./assets/fonts/ariblk.ttf'),
     });
     this.setState({ fontLoaded: true });
   }
