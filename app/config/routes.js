@@ -2,10 +2,12 @@ import React from 'react';
 import { StackNavigator, TabNavigator, TabBarBottom } from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
 
-import Home from '../screens/Home';
+// import Home from '../screens/Home';
 import Schedule from '../screens/Schedule';
 import More from '../screens/More';
 import Others from '../screens/Others';
+import Add from '../screens/Add';
+import Edit from '../screens/Edit';
 
 import Header from '../components/Text';
 
@@ -33,10 +35,25 @@ const MoreStack = StackNavigator(
   },
 );
 
+const ScheduleStack = StackNavigator(
+  { Schedule: { screen: Schedule }, Add: { screen: Add }, Edit: { screen: Edit } },
+  {
+    navigationOptions: ({ navigation }) => ({
+      headerTitle: headerTitle(navigation.state.routeName),
+      headerStyle,
+    }),
+  },
+);
+
 const Tabs = TabNavigator(
   {
-    Home: { screen: Home },
-    Schedule: { screen: Schedule },
+    Schedule: {
+      screen: ScheduleStack,
+      navigationOptions: {
+        header: null,
+      },
+    },
+    // Home: { screen: Home },
     More: {
       screen: MoreStack,
       navigationOptions: {
