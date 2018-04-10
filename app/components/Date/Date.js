@@ -11,7 +11,7 @@ const Date = class Date extends Component {
   render() {
     const day = this.props.day ? this.props.day : moment().day();
     const date = moment()
-      .day(day)
+      .isoWeekday(day)
       .format('MMMM D');
 
     return <Text style={styles.text}>{date.toUpperCase()}</Text>;
