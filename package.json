@@ -10,7 +10,7 @@
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
-    "jest-expo": "25.0.0",
+    "jest-expo": "^27.0.0",
     "prettier": "^1.10.2",
     "prettier-eslint": "^8.8.1",
     "react-native-scripts": "1.11.1",
@@ -31,17 +31,17 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^6.3.1",
-    "expo": "^25.0.0",
+    "expo": "^27.0.0",
     "moment": "^2.20.1",
     "prop-types": "^15.6.0",
-    "react": "16.2.0",
-    "react-native": "0.52.0",
+    "react": "16.3.1",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-27.0.0.tar.gz",
     "react-native-action-button": "^2.8.4",
     "react-native-elements": "1.0.0-beta2",
     "react-native-extended-stylesheet": "^0.8.1",
-    "react-native-gifted-form": "^0.1.1",
-    "react-native-modal": "^5.2.0",
-    "react-navigation": "^1.2.1",
-    "tcomb-form-native": "^0.6.11"
+    "react-native-modal": "^6.1.0",
+    "react-native-paper": "^1.11.0",
+    "react-navigation": "^2.0.4",
+    "react-navigation-material-bottom-tabs": "^0.3.0"
   }
 }

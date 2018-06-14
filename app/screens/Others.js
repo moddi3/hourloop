@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { SQLite } from 'expo';
-import { StatusBar, ScrollView, Text, RefreshControl, View } from 'react-native';
+import { ScrollView, Text, RefreshControl, View, ViewPagerAndroid } from 'react-native';
 import ActionButton from 'react-native-action-button';
 import { List, ListItem } from 'react-native-elements';
 
-import Container from '../components/Container';
+import { Container } from '../components';
 
-const db = SQLite.openDatabase('hourloop22.db');
+const db = SQLite.openDatabase('hourloop.db');
 
 // db.transaction(
 //   (tx) => {
@@ -131,14 +131,14 @@ class Others extends Component {
                       paddingTop: 5,
                     }}
                   >
-                    <Text style={{ fontFamily: 'circular-regular', fontSize: 12, color: '#999' }}>
+                    <Text style={{ fontFamily: 'open-sans', fontSize: 12, color: '#999' }}>
                       {item.teacher}
                     </Text>
                   </View>
                 )
               }
               hideChevron
-              fontFamily="circular-regular"
+              fontFamily="open-sans"
               onPress={() => this.handlePress(item)}
               onLongPress={() => this.handleLongPress(item.id)}
             />
@@ -154,27 +154,38 @@ class Others extends Component {
             alignItems: 'center',
           }}
         >
-          <Text style={{ fontFamily: 'circular-bold', color: '#333' }}>No {type}</Text>
+          <Text style={{ fontFamily: '', color: '#333' }}>No {type}</Text>
         </View>
       );
 
     return (
       <Container paddingHorizontal={0}>
-        <StatusBar barStyle="light-content" />
         <ActionButton
           buttonColor="#3689E6"
+          position="center"
           style={{ zIndex: 1 }}
           fixNativeFeedbackRadius
           onPress={this.handleAdd}
           onLongPress={this.handleDrop}
         />
-
-        <ScrollView
-          contentContainerStyle={{ flexDirection: 'column', flexGrow: 1 }}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} />}
-        >
-          {subjectsList}
-        </ScrollView>
+        <ViewPagerAndroid style={{ flex: 1 }} pageMargin={10} initialPage={1}>
+          <View>
+            <ScrollView
+              contentContainerStyle={{ flexDirection: 'column', flexGrow: 1 }}
+              refreshControl={<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} />}
+            >
+              {subjectsList}
+            </ScrollView>
+          </View>
+          <View style={{ flex: 1 }}>
+            <ScrollView
+              contentContainerStyle={{ flexDirection: 'column', flexGrow: 1 }}
+              refreshControl={<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} />}
+            >
+              {subjectsList}
+            </ScrollView>
+          </View>
+        </ViewPagerAndroid>
       </Container>
     );
   }

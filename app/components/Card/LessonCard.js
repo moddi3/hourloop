@@ -1,63 +1,85 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, TouchableHighlight, View } from 'react-native';
+import { Text, TouchableNativeFeedback, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo';
 
 import Header from '../Text';
 import styles from './styles';
 
+import { Animations } from '../';
+
 class LessonCard extends Component {
+  static propTypes = {
+    lesson: PropTypes.object,
+    colors: PropTypes.arrayOf(PropTypes.string),
+    onLongPressItem: PropTypes.func,
+    onPressItem: PropTypes.func.isRequired,
+    ongoing: PropTypes.bool,
+    expired: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    colors: ['#FF9671', '#F9F871'],
+  };
+
   state = {};
 
-  handlePress = (data) => {
-    const lesson = `
-      Title: ${data.title}
-      Teacher: ${data.teacher},
-      Room: ${data.room},
-      StartsAt: '${data.startsAt}',
-      Fav: ${data.fav},
-      Tasks:,
-    `;
-    alert(lesson);
+  _onPress = () => {
+    this.props.onPressItem(this.props.lesson);
+  };
+
+  _onLongPress = () => {
+    this.props.onLongPressItem(this.props.lesson);
   };
 
   render() {
     const {
-      lesson, color = '#abacae', onPress, onLongPress,
+      lesson, colors, ongoing, expired,
     } = this.props;
 
-    const cardStyles = [styles.card];
+    const containerStyles = [styles.container];
 
-    if (color) cardStyles.push({ backgroundColor: color });
-
+    if (expired) {
+      containerStyles.push({ opacity: 0.75 }, styles.expired);
+    }
     return (
-      <TouchableHighlight onPress={onPress} onLongPress={onLongPress} style={styles.container}>
-        <View style={cardStyles}>
-          <View style={[styles.row, { justifyContent: 'space-between' }]}>
-            <LessonTitle title={lesson.title} />
-            {/* <Text style={{ fontFamily: 'circular-bold', color: '#fff' }}>{lesson.day}</Text> */}
-            <IsFavourite status={lesson.fav} />
-          </View>
-          <LessonTeacher name={lesson.teacher} />
-
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'flex-end',
-              flexGrow: 1,
-            }}
+      <TouchableNativeFeedback
+        onPress={this._onPress}
+        onLongPress={this._onLongPress}
+        useForeground
+        background={TouchableNativeFeedback.Ripple('rgba(255,255,255,0.3)', true)}
+      >
+        <View style={containerStyles}>
+          <LinearGradient
+            start={{ x: 0.0, y: 1.0 }}
+            end={{ x: 1.0, y: 0.0 }}
+            colors={colors}
+            style={styles.card}
           >
-            <View>
-              {/* <Text style={{ color: '#fff', fontSize: 8 }}>
-                You have {lesson.tasks.length} tasks
-              </Text> */}
-              <LessonStart time={lesson.startsAt} />
+            <View style={[styles.row, { justifyContent: 'space-between' }]}>
+              <LessonTitle title={lesson.title} />
+              {ongoing && <Animations.Beacon />}
+              {/* <IsFavourite status={lesson.fav} /> */}
+              <Text>{lesson.day}</Text>
             </View>
-            <LessonLocation place={lesson.room} />
-          </View>
+            <LessonTeacher name={lesson.teacher} />
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'flex-end',
+                flexGrow: 1,
+              }}
+            >
+              <View>
+                <LessonTime start={lesson.startsAt} end={lesson.endsAt} />
+              </View>
+              <LessonLocation place={lesson.room} />
+            </View>
+          </LinearGradient>
         </View>
-      </TouchableHighlight>
+      </TouchableNativeFeedback>
     );
   }
 }
@@ -73,7 +95,7 @@ const LessonTeacher = ({ name }) => (
     style={{
       color: '#fff',
       fontSize: 13,
-      fontFamily: 'circular-regular',
+      fontFamily: 'open-sans-light',
     }}
   >
     {name}
@@ -87,15 +109,15 @@ const IsFavourite = ({ status }) =>
     <Ionicons name="md-heart-outline" size={25} color="#fff" />
   ));
 
-const LessonStart = ({ time }) => (
+const LessonTime = ({ start, end }) => (
   <Text
     style={{
       color: '#fff',
       fontSize: 13,
-      fontFamily: 'circular-medium',
+      fontFamily: 'open-sans-bold',
     }}
   >
-    {time}
+    {start} - {end}
   </Text>
 );
 
@@ -106,7 +128,7 @@ const LessonLocation = ({ place }) => (
       style={{
         color: '#fff',
         fontSize: 15,
-        fontFamily: 'circular-regular',
+        fontFamily: 'open-sans-bold',
         marginLeft: 3,
       }}
     >
@@ -114,13 +136,6 @@ const LessonLocation = ({ place }) => (
     </Text>
   </View>
 );
-
-LessonCard.propTypes = {
-  lesson: PropTypes.object,
-  color: PropTypes.string,
-  onLongPress: PropTypes.func,
-  onPress: PropTypes.func.isRequired,
-};
 
 LessonTitle.propTypes = {
   title: PropTypes.string,
@@ -134,8 +149,9 @@ IsFavourite.propTypes = {
   status: PropTypes.number,
 };
 
-LessonStart.propTypes = {
-  time: PropTypes.string,
+LessonTime.propTypes = {
+  start: PropTypes.string,
+  end: PropTypes.string,
 };
 
 LessonLocation.propTypes = {

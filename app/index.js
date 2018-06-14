@@ -1,42 +1,64 @@
 import React, { Component } from 'react';
 import { Font } from 'expo';
-import { ActivityIndicator } from 'react-native';
+import { View } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import moment from 'moment';
+import localization from 'moment/locale/en-gb';
 
 import Navigator from './config/routes';
+import { ScheduleProvider } from './components/ScheduleContext';
+import { Animations } from './components';
 
 EStyleSheet.build({
-  $white: '#fff',
+  $white: '#ffffff',
   $border: '#e2e2e2',
   $lightGray: '#ededed',
-  $gray: '#666',
-  $darkGray: '#333',
+  $gray: '#666666',
+  $darkGray: '#333333',
 });
+
+moment().locale('en-gb', localization);
 
 class App extends Component {
   state = {
-    fontLoaded: false,
+    isReady: false,
   };
-  async componentWillMount() {
-    await Font.loadAsync({
-      'circular-regular': require('./assets/fonts/Circular-Book.otf'),
-      'circular-medium': require('./assets/fonts/Circular-Medium.otf'),
-      'circular-bold': require('./assets/fonts/Circular-Bold.otf'),
-      'circular-black': require('./assets/fonts/Circular-Black.otf'),
-      // 'arial-regular': require('./assets/fonts/arial.ttf'),
-      // 'arial-bold': require('./assets/fonts/arialbd.ttf'),
-      // 'arial-black': require('./assets/fonts/ariblk.ttf'),
-    });
-    this.setState({ fontLoaded: true });
+
+  componentWillMount() {
+    this._preloadFonts();
   }
 
+  _preloadFonts = async () => {
+    await Font.loadAsync({
+      'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+      'open-sans-light': require('./assets/fonts/OpenSans-Light.ttf'),
+      'open-sans-semibold': require('./assets/fonts/OpenSans-SemiBold.ttf'),
+      'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+      'open-sans-extrabold': require('./assets/fonts/OpenSans-ExtraBold.ttf'),
+    });
+    this.setState({ isReady: true });
+  };
+
   render() {
-    return this.state.fontLoaded ? (
+    return this.state.isReady ? (
       <Navigator />
     ) : (
-      <ActivityIndicator size="large" color="#3689E6" />
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Animations.Loader />
+      </View>
     );
   }
 }
 
-export default App;
+export default () => (
+  <ScheduleProvider>
+    <App />
+  </ScheduleProvider>
+);

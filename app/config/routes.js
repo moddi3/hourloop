@@ -1,25 +1,93 @@
 import React from 'react';
-import { StackNavigator, TabNavigator, TabBarBottom } from 'react-navigation';
-import { Ionicons } from '@expo/vector-icons';
+import { TouchableNativeFeedback, View, Share } from 'react-native';
+import { createStackNavigator } from 'react-navigation';
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
+
+import { Feather } from '@expo/vector-icons';
 
 // import Home from '../screens/Home';
+import Modify from '../screens/Modify';
+import Settings from '../screens/Settings';
 import Schedule from '../screens/Schedule';
 import More from '../screens/More';
 import Others from '../screens/Others';
-import Add from '../screens/Add';
-import Edit from '../screens/Edit';
+// import Add from '../screens/Add';
+// import Edit from '../screens/Edit';
+import { Header } from '../components';
 
-import Header from '../components/Text';
-
-const headerStyle = { paddingLeft: 10 };
+const headerStyle = {
+  paddingLeft: 10,
+  paddingRight: 5,
+  // height: navHeader.HEIGHT - Constants.statusBarHeight,
+};
 
 const headerTitle = title => <Header fontSize={28}>{title}</Header>;
 
-const MoreStack = StackNavigator(
-  {
-    More: {
-      screen: More,
+const ScheduleStack = createStackNavigator({
+  Schedule: {
+    screen: Schedule,
+    navigationOptions: ({ navigation }) => {
+      const params = navigation.state.params || {};
+      return {
+        headerTitle: headerTitle(navigation.state.routeName),
+        headerStyle,
+        headerRight: (
+          <View style={{ flexDirection: 'row' }}>
+            <TouchableNativeFeedback
+              onPress={params.setDay}
+              background={TouchableNativeFeedback.Ripple('#3333', true)}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: 36,
+                  height: 36,
+                }}
+              >
+                <Feather name="eye" size={24} color="#333" />
+              </View>
+            </TouchableNativeFeedback>
+            <TouchableNativeFeedback
+              onPress={() =>
+                Share.share(
+                  {
+                    title: 'Share schedule',
+                    message: params.url,
+                    url: params.url,
+                  },
+                  { dialogTitle: 'Share schedule' },
+                )
+              }
+              background={TouchableNativeFeedback.Ripple('#3333', true)}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: 36,
+                  height: 36,
+                }}
+              >
+                <Feather name="share" size={24} color="#333" />
+              </View>
+            </TouchableNativeFeedback>
+          </View>
+        ),
+      };
     },
+  },
+  Add: { screen: Modify, navigationOptions: { header: null } },
+  Edit: { screen: Modify, navigationOptions: { header: null } },
+});
+
+const MoreStack = createStackNavigator(
+  {
+    More,
     Subjects: {
       screen: props => <Others {...props} type="subjects" />,
     },
@@ -35,8 +103,10 @@ const MoreStack = StackNavigator(
   },
 );
 
-const ScheduleStack = StackNavigator(
-  { Schedule: { screen: Schedule }, Add: { screen: Add }, Edit: { screen: Edit } },
+const SettingsStack = createStackNavigator(
+  {
+    Settings,
+  },
   {
     navigationOptions: ({ navigation }) => ({
       headerTitle: headerTitle(navigation.state.routeName),
@@ -45,74 +115,61 @@ const ScheduleStack = StackNavigator(
   },
 );
 
-const Tabs = TabNavigator(
+const TabNavigator = createMaterialBottomTabNavigator(
   {
-    Schedule: {
-      screen: ScheduleStack,
-      navigationOptions: {
-        header: null,
-      },
-    },
+    Schedule: ScheduleStack,
+    More: MoreStack,
+    Settings,
     // Home: { screen: Home },
-    More: {
-      screen: MoreStack,
-      navigationOptions: {
-        header: null,
-      },
-    },
+    // Modify: { screen: Others },
   },
   {
+    // shifting: true,
+    labeled: false,
+    activeTintColor: '#3689E6',
+    inactiveTintColor: '#999',
+    barStyle: { backgroundColor: '#fff' },
     navigationOptions: ({ navigation }) => ({
-      headerTitle: headerTitle(navigation.state.routeName),
       tabBarIcon: ({ tintColor }) => {
         const { routeName } = navigation.state;
         let iconName;
         switch (routeName) {
           case 'Home':
-            iconName = 'md-home';
+            iconName = 'home';
             break;
           case 'Schedule':
-            iconName = 'md-calendar';
+            iconName = 'calendar';
+            // iconName = 'clock';
             break;
           case 'More':
-            iconName = 'md-list-box';
+            iconName = 'inbox';
+            // iconName = 'file-text';
+            break;
+          case 'Settings':
+            iconName = 'settings';
             break;
           default:
-            iconName = 'logo-android';
+            iconName = 'layers';
             break;
         }
-        return <Ionicons name={iconName} size={25} color={tintColor} />;
+        return <Feather name={iconName} size={24} color={tintColor} />;
       },
     }),
-    tabBarPosition: 'bottom',
-    tabBarComponent: TabBarBottom,
-    swipeEnabled: false,
-    animationEnabled: false,
-    tabBarOptions: {
-      showLabel: false,
-      activeTintColor: '#3689E6',
-      inactiveTintColor: '#999',
-      pressColor: 'rgba(54, 137, 230, 0.2)',
-      style: {
-        backgroundColor: '#ffffff',
-        borderTopWidth: 0,
-        elevation: 12,
-      },
-      labelStyle: {
-        fontSize: 10,
-        marginBottom: 5,
-      },
-    },
   },
 );
 
-export default StackNavigator(
+export default createStackNavigator(
   {
-    screen: Tabs,
+    TabNavigator,
   },
   {
-    navigationOptions: {
-      headerStyle,
-    },
+    navigationOptions: { header: null },
   },
 );
+
+// export default createStackNavigator(
+//   { Modify },
+//   {
+//     navigationOptions: { header: null },
+//   },
+// );

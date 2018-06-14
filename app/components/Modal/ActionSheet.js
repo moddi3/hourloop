@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, TouchableHighlight, View } from 'react-native';
+import { Text, TouchableNativeFeedback, View } from 'react-native';
 import Modal from 'react-native-modal';
 
 import styles from './styles';
@@ -34,20 +34,17 @@ class ActionSheet extends Component {
       </View>
     );
   };
-
   renderButton(title, index) {
     return (
-      <TouchableHighlight
+      <TouchableNativeFeedback
         key={index}
-        activeOpacity={1}
-        underlayColor="#e2e2e2"
-        style={[styles.buttonWrapper]}
-        onPress={() => {
-          this.props.onPress ? this.props.onPress(index) : null;
-        }}
+        onPress={() => this.props.onPress && this.props.onPress(index)}
+        background={TouchableNativeFeedback.SelectableBackground()}
       >
-        <Text style={{}}>{title}</Text>
-      </TouchableHighlight>
+        <View style={[styles.buttonWrapper]}>
+          <Text style={{}}>{title}</Text>
+        </View>
+      </TouchableNativeFeedback>
     );
   }
 
@@ -56,14 +53,11 @@ class ActionSheet extends Component {
 
     if (cancelIndex > -1 && options[cancelIndex]) {
       return (
-        <TouchableHighlight
-          activeOpacity={1}
-          underlayColor="#e2e2e2"
-          style={[styles.buttonWrapper, { marginTop: 6 }]}
-          onPress={this.props.onBackdropPress}
-        >
-          <Text> {options[cancelIndex]}</Text>
-        </TouchableHighlight>
+        <TouchableNativeFeedback onPress={this.props.onBackdropPress}>
+          <View style={[styles.buttonWrapper, { marginTop: 6 }]}>
+            <Text> {options[cancelIndex]}</Text>
+          </View>
+        </TouchableNativeFeedback>
       );
     }
     return null;

@@ -1,55 +1,40 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { StatusBar } from 'react-native';
-
-import { SQLite } from 'expo';
-
+import { GiftedForm } from 'react-native-gifted-form';
 import moment from 'moment';
 
-import { GiftedForm } from 'react-native-gifted-form';
+import { Container } from '../components';
+import { ScheduleConsumer } from '../components/ScheduleContext';
 
-// TODO: create a global index list for components
-import Container from '../components/Container';
-
-const db = SQLite.openDatabase('hourloop22.db');
-
-class Add extends Component {
+class Edit extends Component {
   static propTypes = {
     navigation: PropTypes.object,
+    editLesson: PropTypes.func,
   };
 
   state = {
-    oldLesson: this.props.navigation.state.params.lesson,
-    lesson: null,
+    lesson: this.props.navigation.state.params.lesson,
   };
 
-  handleSubmit = () => {
-    const { id } = this.state.oldLesson;
-    const {
-      title, teacher, room, day, startsAt, endsAt,
-    } = this.state.lesson;
-    db.transaction((tx) => {
-      tx.executeSql(
-        'update lessons set title = ?, teacher = ?, room = ?, day = ?, startsAt = ?, endsAt = ? where id = ?;',
-        [title, teacher, room, day, startsAt, endsAt, id],
-        this.update,
-        this.handleError,
-      );
-    });
-    console.log(id);
-  };
   handleValueChange = (values) => {
-    this.setState({ lesson: values });
+    this.setState({
+      lesson: {
+        id: this.state.lesson.id,
+        ...values,
+        day: moment()
+          .weekday(values.day)
+          .format('e'),
+      },
+    });
     console.log(values);
   };
   render() {
     const {
       title, teacher, room, day, startsAt, endsAt,
-    } = this.state.oldLesson;
+    } = this.state.lesson;
 
     return (
       <Container paddingHorizontal={0}>
-        <StatusBar barStyle="light-content" />
         <GiftedForm
           formName="AddForm"
           onValueChange={this.handleValueChange}
@@ -104,20 +89,21 @@ class Add extends Component {
             name="title"
             title="Lesson Title"
             placeholder="Algebra"
-            value={title}
+            keyboardType=""
+            value={title || ''}
           />
           <GiftedForm.TextInputWidget
             name="teacher"
             title="Teacher"
             placeholder="Danilova M V"
-            value={teacher}
+            value={teacher || ''}
           />
           <GiftedForm.TextInputWidget
             name="room"
             title="Room"
             placeholder="302"
             keyboardType="numeric"
-            value={`${room}`}
+            value={`${room || ''}`}
           />
           <GiftedForm.TextInputWidget name="day" title="Day" placeholder="Monday" value={day} />
 
@@ -125,13 +111,13 @@ class Add extends Component {
             name="startsAt"
             title="Start"
             placeholder="8:10 AM"
-            value={startsAt}
+            value={startsAt || ''}
           />
           <GiftedForm.TextInputWidget
             name="endsAt"
             title="End"
             placeholder="9:30 AM"
-            value={endsAt}
+            value={endsAt || ''}
           />
 
           <GiftedForm.ErrorsWidget />
@@ -145,10 +131,8 @@ class Add extends Component {
             }}
             onSubmit={(isValid) => {
               if (isValid === true) {
-                this.handleSubmit();
-                // this.props.navigation.navigate('Schedule', {
-                //   activeDay: this.props.navigation.state.active,
-                // });
+                this.props.editLesson(this.state.lesson);
+
                 this.props.navigation.goBack();
               }
             }}
@@ -159,4 +143,6 @@ class Add extends Component {
   }
 }
 
-export default Add;
+export default props => (
+  <ScheduleConsumer>{context => <Edit {...context} {...props} />}</ScheduleConsumer>
+);

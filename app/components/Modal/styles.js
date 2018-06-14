@@ -12,7 +12,6 @@ const styles = EStyleSheet.create({
   },
 
   modalContent: {
-    // flex: 1,
     backgroundColor: '$border',
     justifyContent: 'center',
     alignItems: 'center',
@@ -26,10 +25,7 @@ const styles = EStyleSheet.create({
     marginTop: hairlineWidth,
     alignItems: 'center',
     justifyContent: 'center',
-    // borderTopWidth: hairlineWidth,
     borderRadius: BORDER_RADIUS,
-
-    // borderTopColor: '$border',
   },
 
   title: {
@@ -39,7 +35,7 @@ const styles = EStyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  titleText: { fontFamily: 'circular-bold' },
+  titleText: { fontFamily: 'open-sans-bold' },
 });
 
 export default styles;

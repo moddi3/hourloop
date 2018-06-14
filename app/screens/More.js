@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { StatusBar, ScrollView, RefreshControl } from 'react-native';
+import { ScrollView, RefreshControl } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { SQLite } from 'expo';
-import Container from '../components/Container';
 
-const db = SQLite.openDatabase('hourloop22.db');
+import { Container } from '../components';
+
+const db = SQLite.openDatabase('hourloop.db');
 
 class More extends Component {
   static propTypes = {
     navigation: PropTypes.object,
-    // dispatch: PropTypes.func,
   };
   state = {
     subjects: 0,
@@ -55,17 +55,16 @@ class More extends Component {
           style={{ backgroundColor: '#fff' }}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} />}
         >
-          <StatusBar barStyle="light-content" />
           <List containerStyle={{ marginBottom: 20 }}>
             {list.map(item => (
               <ListItem
                 key={item.title}
                 title={item.title}
-                fontFamily="circular-regular"
+                fontFamily="open-sans"
                 leftIcon={{ name: item.icon, color: '#999' }}
                 badge={{
                   value: item.quantity,
-                  textStyle: { fontFamily: 'circular-regular' },
+                  textStyle: { fontFamily: 'open-sans' },
                   containerStyle: { backgroundColor: '#999' },
                 }}
                 onPress={() => this.props.navigation.navigate(item.title)}
