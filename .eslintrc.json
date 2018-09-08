@@ -22,6 +22,11 @@
     "no-underscore-dangle": [0],
     "no-console": [0],
     "no-alert": [0],
-    "no-unused-expressions": [0, { "allowTernary": true }]
+    "no-unused-expressions": [
+      0,
+      {
+        "allowTernary": true
+      }
+    ]
   }
 }

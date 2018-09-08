@@ -34,6 +34,7 @@ class ScheduleScreen extends Component {
   };
 
   componentDidMount() {
+    StatusBar.setBackgroundColor('#553A91');
     this.interval = setInterval(this.updateMoment, 3000);
 
     Linking.getInitialURL().then((url) => {
@@ -90,7 +91,7 @@ class ScheduleScreen extends Component {
   };
 
   _setDay = (day) => {
-    this.pageRef.current.setPage(parseInt(day, 10) || this.state.today);
+    this.pageRef.current.setPage(day !== undefined ? parseInt(day, 10) : this.state.today);
   };
 
   pageRef = React.createRef();
@@ -183,7 +184,6 @@ class ScheduleScreen extends Component {
           onBackdropPress={this.hideActionSheet}
           onPress={this.handleOptionPress}
         />
-
         <ViewPagerAndroid
           style={{ flex: 1 }}
           pageMargin={10}
