@@ -18,7 +18,6 @@ import { Header } from '../components';
 const headerStyle = {
   paddingLeft: 10,
   paddingRight: 5,
-  // height: navHeader.HEIGHT - Constants.statusBarHeight,
 };
 
 const headerTitle = title => <Header fontSize={28}>{title}</Header>;
@@ -34,7 +33,7 @@ const ScheduleStack = createStackNavigator({
         headerRight: (
           <View style={{ flexDirection: 'row' }}>
             <TouchableNativeFeedback
-              onPress={params.setDay}
+              onPress={() => params.setDay()}
               background={TouchableNativeFeedback.Ripple('#3333', true)}
             >
               <View
@@ -87,25 +86,18 @@ const ScheduleStack = createStackNavigator({
 
 const MoreStack = createStackNavigator(
   {
-    More,
+    More: {
+      screen: More,
+      navigationOptions: {
+        header: null,
+      },
+    },
     Subjects: {
       screen: props => <Others {...props} type="subjects" />,
     },
     Teachers: {
       screen: props => <Others {...props} type="teachers" />,
     },
-  },
-  {
-    navigationOptions: ({ navigation }) => ({
-      headerTitle: headerTitle(navigation.state.routeName),
-      headerStyle,
-    }),
-  },
-);
-
-const SettingsStack = createStackNavigator(
-  {
-    Settings,
   },
   {
     navigationOptions: ({ navigation }) => ({
@@ -124,8 +116,8 @@ const TabNavigator = createMaterialBottomTabNavigator(
     // Modify: { screen: Others },
   },
   {
-    // shifting: true,
-    labeled: false,
+    shifting: true,
+    // labeled: false,
     activeTintColor: '#3689E6',
     inactiveTintColor: '#999',
     barStyle: { backgroundColor: '#fff' },
@@ -168,7 +160,7 @@ export default createStackNavigator(
 );
 
 // export default createStackNavigator(
-//   { Modify },
+//   { Settings },
 //   {
 //     navigationOptions: { header: null },
 //   },

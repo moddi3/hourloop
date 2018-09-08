@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView, RefreshControl } from 'react-native';
+import { View, ScrollView, RefreshControl } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
-import { SQLite } from 'expo';
+import { Constants, LinearGradient, SQLite } from 'expo';
 
-import { Container } from '../components';
+import { Container, Header } from '../components';
 
 const db = SQLite.openDatabase('hourloop.db');
 
@@ -51,11 +51,33 @@ class More extends Component {
 
     return (
       <Container paddingHorizontal={0}>
+        <LinearGradient
+          start={{ x: 0.0, y: 1.0 }}
+          end={{ x: 1.0, y: 0.0 }}
+          colors={['#0396FF', '#ABDCFF']}
+          style={{
+            height: 160 + Constants.statusBarHeight,
+            paddingTop: Constants.statusBarHeight,
+          }}
+        >
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Header fontSize={34} color="#fff">
+              {this.props.navigation.state.routeName}
+            </Header>
+          </View>
+        </LinearGradient>
         <ScrollView
           style={{ backgroundColor: '#fff' }}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} />}
         >
-          <List containerStyle={{ marginBottom: 20 }}>
+          <List containerStyle={{}}>
             {list.map(item => (
               <ListItem
                 key={item.title}

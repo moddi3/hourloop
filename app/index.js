@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Font } from 'expo';
-import { View } from 'react-native';
+import { View, StatusBar } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import moment from 'moment';
 import localization from 'moment/locale/en-gb';
@@ -41,7 +41,10 @@ class App extends Component {
 
   render() {
     return this.state.isReady ? (
-      <Navigator />
+      <View style={{ flex: 1 }}>
+        <StatusBar barStyle="light-content" />
+        <Navigator />
+      </View>
     ) : (
       <View
         style={{

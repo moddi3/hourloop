@@ -1,12 +1,9 @@
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 const styles = EStyleSheet.create({
-  container: {
-    marginBottom: 10,
-  },
   card: {
+    flex: 1,
     borderRadius: 4,
-    minWidth: '100%',
     height: 95,
     paddingVertical: 10,
     paddingHorizontal: 15,
@@ -16,6 +13,7 @@ const styles = EStyleSheet.create({
     alignItems: 'center',
   },
   expired: {
+    opacity: 0.75,
     flexDirection: 'row',
   },
 });

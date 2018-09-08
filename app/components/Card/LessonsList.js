@@ -1,29 +1,27 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, RefreshControl, StyleSheet, View } from 'react-native';
+import { FlatList, RefreshControl, StyleSheet, View, ScrollView } from 'react-native';
 
 import LessonCard from './LessonCard';
 import { Header } from '../';
 
-const LessonsList = ({
-  rowData,
-  colors,
-  onLessonPress,
-  onLongLessonPress,
-  isLessonExpired,
-  isLessonOngoing,
-  refreshing,
-  onRefresh,
-  now,
-}) => (
-  <View style={styles.container}>
-    {rowData.length === 0 ? (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Header color="#666" fontSize={24}>
-          No lessons, yet.
-        </Header>
-      </View>
-    ) : (
+class LessonsList extends Component {
+  state = {};
+
+  render() {
+    const {
+      rowData,
+      colors,
+      onLessonPress,
+      onLongLessonPress,
+      isLessonExpired,
+      isLessonOngoing,
+      refreshing,
+      onRefresh,
+      now,
+    } = this.props;
+
+    const list = rowData.length ? (
       <FlatList
         keyExtractor={(item, index) => index.toString()}
         data={rowData}
@@ -41,13 +39,25 @@ const LessonsList = ({
             />
           );
         }}
+        ItemSeparatorComponent={() => <View style={{ flex: 1, height: 10 }} />}
         overScrollMode="never"
         showsVerticalScrollIndicator={false}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       />
-    )}
-  </View>
-);
+    ) : (
+      <ScrollView
+        contentContainerStyle={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      >
+        <Header color="#666" fontSize={24}>
+          No lessons, yet.
+        </Header>
+      </ScrollView>
+    );
+
+    return <View style={styles.container}>{list}</View>;
+  }
+}
 
 export default LessonsList;
 

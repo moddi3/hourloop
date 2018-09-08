@@ -6,5 +6,6 @@ import Header from './Text';
 import * as Animations from './Animations';
 import Input from './TextInput';
 import TimePicker from './TimePicker';
+import * as List from './List';
 
-export { Day, Container, Date, ActionSheet, Header, Animations, Input, TimePicker };
+export { Day, Container, Date, ActionSheet, Header, Animations, Input, TimePicker, List };

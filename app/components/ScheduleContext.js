@@ -24,6 +24,7 @@ const ScheduleContext = React.createContext({
   importLessons: () => null,
   editLesson: () => null,
   removeLesson: () => null,
+  removeAll: () => null,
 });
 
 export const ScheduleConsumer = ScheduleContext.Consumer;
@@ -36,7 +37,7 @@ export class ScheduleProvider extends React.Component {
     dates: Array.from(new Array(7), (val, index) => index).map(dow => moment().weekday(dow)),
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.updateLessons();
   }
 
@@ -44,7 +45,23 @@ export class ScheduleProvider extends React.Component {
     this.setState({ refreshing: true });
     this.updateLessons();
   };
-  s;
+
+  sortTime = (a, b) =>
+    moment(a.startsAt, 'HH:mm').diff(moment(b.startsAt, 'HH:mm')) &&
+    moment(a.endsAt, 'HH:mm').diff(moment(b.endsAt, 'HH:mm'));
+
+  streamSchedule = () => {
+    fetch('http://192.168.1.26:3000/link/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        lessons: this.state.lessons.sort(this.sortTime),
+      }),
+    });
+  };
 
   updateLessons = () => {
     db.transaction((tx) => {
@@ -52,10 +69,10 @@ export class ScheduleProvider extends React.Component {
         this.setState({
           lessons: _array,
           refreshing: false,
-          url: Linking.makeUrl('Schedule', { lessons: _array }),
+          url: Linking.makeUrl('', { lessons: _array }),
         });
       });
-    });
+    }, null, this.streamSchedule);
   };
 
   createLesson = ({
@@ -145,6 +162,18 @@ export class ScheduleProvider extends React.Component {
     );
   };
 
+  removeAll = () => {
+    db.transaction(
+      (tx) => {
+        tx.executeSql('delete from lessons', [], () => {
+          this.setState({ imported: 0 });
+        });
+      },
+      null,
+      this.updateLessons,
+    );
+  };
+
   isExpired = (lesson, now) => {
     if (
       (moment(lesson.endsAt, 'H:mm').isBefore(now) && lesson.day === moment().format('e')) ||
@@ -182,6 +211,7 @@ export class ScheduleProvider extends React.Component {
           importLessons: this.importLessons,
           editLesson: this.editLesson,
           removeLesson: this.removeLesson,
+          removeAll: this.removeAll,
         }}
       >
         {this.props.children}
