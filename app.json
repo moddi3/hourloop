@@ -3,7 +3,7 @@
     "name": "Hourloop",
     "version": "0.2.5",
     "slug": "hourloop",
-    "sdkVersion": "28.0.0",
+    "sdkVersion": "29.0.0",
     "ios": {
       "bundleIdentifier": "com.moddi3io.hourloop"
     },
