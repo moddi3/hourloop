@@ -1,21 +1,24 @@
 {
   "expo": {
     "name": "Hourloop",
-    "version": "0.2.5",
+    "version": "0.2.6",
     "slug": "hourloop",
-    "sdkVersion": "29.0.0",
-    "ios": {
-      "bundleIdentifier": "com.moddi3io.hourloop"
-    },
-    "android": {
-      "package": "com.moddi3io.hourloop"
-    },
+    "scheme": "hourloop",
+    "sdkVersion": "30.0.0",
     "icon": "./app/assets/icon.png",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "splash": {
       "image": "./app/assets/splash.png",
       "resizeMode": "cover",
       "backgroundColor": "#FFF"
     },
-    "scheme": "hourloop"
+    "ios": {
+      "bundleIdentifier": "com.moddi3io.hourloop"
+    },
+    "android": {
+      "package": "com.moddi3io.hourloop"
+    }
   }
 }
