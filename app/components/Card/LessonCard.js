@@ -58,7 +58,7 @@ class LessonCard extends Component {
       <TouchableNativeFeedback
         onPress={this._onPress}
         onLongPress={this._onLongPress}
-        useForeground
+        // useForeground
         background={TouchableNativeFeedback.Ripple('rgba(255,255,255,0.3)', true)}
       >
         <View style={containerStyles}>
