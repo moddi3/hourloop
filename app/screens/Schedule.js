@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, View, ViewPagerAndroid, Text, Linking } from 'react-native';
+import { Alert, View, ViewPagerAndroid, Text, Linking, StatusBar } from 'react-native';
 import PropTypes from 'prop-types';
 import ActionButton from 'react-native-action-button';
 import moment from 'moment';
@@ -154,6 +154,7 @@ class ScheduleScreen extends Component {
 
     return (
       <Container paddingHorizontal={0}>
+        <StatusBar barStyle="dark-content" backgroundColor="#fff" />
         <ActionButton
           buttonColor="#3689E6"
           style={{ zIndex: 1 }}

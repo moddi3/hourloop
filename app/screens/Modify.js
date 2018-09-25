@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, View, ScrollView, Picker, ToastAndroid } from 'react-native';
+import { TouchableOpacity, View, ScrollView, Picker, ToastAndroid, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Constants, LinearGradient } from 'expo';
 import PropTypes from 'prop-types';
@@ -63,6 +63,7 @@ class Modify extends Component {
     const { error } = this.state;
     return (
       <Container paddingHorizontal={0}>
+        <StatusBar barStyle="light-content" backgroundColor="#000" />
         <LinearGradient
           start={{ x: 0.0, y: 1.0 }}
           end={{ x: 1.0, y: 0.0 }}

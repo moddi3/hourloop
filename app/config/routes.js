@@ -47,7 +47,7 @@ const ScheduleStack = createStackNavigator({
                   height: 36,
                 }}
               >
-                <Feather name="eye" size={24} color="#333" />
+                <Feather name="eye" size={24} color="#3689E6" />
               </View>
             </TouchableNativeFeedback>
             <TouchableNativeFeedback
