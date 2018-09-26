@@ -6,6 +6,7 @@ import {
   Picker,
   ToastAndroid,
   KeyboardAvoidingView,
+  StatusBar,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Constants, LinearGradient } from 'expo';
@@ -79,6 +80,7 @@ class Modify extends Component {
     const { error } = this.state;
     return (
       <Container paddingHorizontal={0}>
+      <StatusBar barStyle="light-content" backgroundColor="#000" />
         <KeyboardAvoidingView
           behavior="padding"
           style={{

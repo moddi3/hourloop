@@ -155,6 +155,7 @@ class ScheduleScreen extends Component {
 
     return (
       <Container paddingHorizontal={0}>
+        <StatusBar barStyle="dark-content" backgroundColor="#fff" />
         <ActionButton
           buttonColor="#3689E6"
           style={{ zIndex: 1 }}
