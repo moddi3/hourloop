@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
-import { Alert, View, ViewPagerAndroid, Text, Linking, StatusBar } from 'react-native';
+import {
+  Alert, View, ViewPagerAndroid, Text, Linking, StatusBar,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import ActionButton from 'react-native-action-button';
 import moment from 'moment';
 import { Feather } from '@expo/vector-icons';
 import { Linking as ExpoLinking } from 'expo';
 
-import { Container, ActionSheet, Header, Day } from '../components';
+import {
+  Container, ActionSheet, Header, Day,
+} from '../components';
 import { ScheduleConsumer } from '../components/ScheduleContext';
 
 const CANCEL_INDEX = 0;
@@ -32,6 +36,8 @@ class ScheduleScreen extends Component {
     selected: null,
     now: moment(),
   };
+
+  pageRef = React.createRef();
 
   componentDidMount() {
     StatusBar.setBackgroundColor('#553A91');
@@ -94,8 +100,6 @@ class ScheduleScreen extends Component {
     this.pageRef.current.setPage(day !== undefined ? parseInt(day, 10) : this.state.today);
   };
 
-  pageRef = React.createRef();
-
   _onPageSelected = (e) => {
     this.setState({ activeDay: e.nativeEvent.position.toString() });
   };
@@ -110,27 +114,37 @@ class ScheduleScreen extends Component {
   };
 
   handleOptionPress = (action) => {
+    const { selected } = this.state;
+    const { removeLesson, navigation } = this.props;
+
     this.hideActionSheet();
-    if (action === 2) {
-      this.props.removeLesson(this.state.selected);
-    } else if (action === 1) {
-      this.props.navigation.navigate('Edit', {
-        lesson: this.state.selected,
-        ...this.props.navigation.state.params,
-      });
-    } else alert(action);
+
+    switch (action) {
+      case 1:
+        navigation.navigate('Edit', {
+          lesson: selected,
+          ...navigation.state.params,
+        });
+        break;
+      case 2:
+        removeLesson(selected);
+        break;
+      default: alert(action); break;
+    }
   };
 
-  renderSchedule = () =>
-    this.props.dates.map(day => (
-      <View key={day.toString()}>
-        <Day day={day} now={this.state.now} />
-      </View>
-    ));
+  renderSchedule = () => this.props.dates.map(day => (
+    <View key={day.toString()}>
+      <Day day={day} now={this.state.now} />
+    </View>
+  ));
 
   render() {
     // this.props.lessons.map(item => console.log(item));
-    const { selected } = this.state;
+    const {
+      activeDay, isVisible, selected, today,
+    } = this.state;
+    const { navigation } = this.props;
     const title = selected && (
       <View
         style={{
@@ -148,7 +162,11 @@ class ScheduleScreen extends Component {
           <Header>{selected.title}</Header>
         </View>
         <Text style={{ color: '#333', fontFamily: 'open-sans-bold' }}>
-          {selected.startsAt} - {selected.endsAt}
+          {selected.startsAt}
+          {' '}
+-
+          {' '}
+          {selected.endsAt}
         </Text>
       </View>
     );
@@ -165,16 +183,15 @@ class ScheduleScreen extends Component {
           position="center"
           useNativeFeedback
           fixNativeFeedbackRadius
-          onPress={() =>
-            this.props.navigation.navigate('Add', {
-              activeDay: this.state.activeDay,
-              ...this.props.navigation.state.params,
-            })
+          onPress={() => navigation.navigate('Add', {
+            activeDay,
+            ...navigation.state.params,
+          })
           }
           onLongPress={this.handleDrop}
         />
         <ActionSheet
-          isVisible={this.state.isVisible === 'actionSheet'}
+          isVisible={isVisible === 'actionSheet'}
           title={title}
           ref={(c) => {
             this.actionSheet = c;
@@ -187,7 +204,7 @@ class ScheduleScreen extends Component {
         <ViewPagerAndroid
           style={{ flex: 1 }}
           pageMargin={10}
-          initialPage={this.state.today}
+          initialPage={today}
           onPageSelected={this._onPageSelected}
           ref={this.pageRef}
         >

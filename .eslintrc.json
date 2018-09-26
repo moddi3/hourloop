@@ -27,6 +27,7 @@
       {
         "allowTernary": true
       }
-    ]
+    ],
+    "react/destructuring-assignment": [0]
   }
 }

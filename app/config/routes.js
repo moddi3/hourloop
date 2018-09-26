@@ -29,7 +29,7 @@ const ScheduleStack = createStackNavigator({
       const params = navigation.state.params || {};
       return {
         headerTitle: headerTitle(navigation.state.routeName),
-        headerStyle,
+        headerTitleContainerStyle: headerStyle,
         headerRight: (
           <View style={{ flexDirection: 'row' }}>
             <TouchableNativeFeedback
@@ -50,15 +50,14 @@ const ScheduleStack = createStackNavigator({
               </View>
             </TouchableNativeFeedback>
             <TouchableNativeFeedback
-              onPress={() =>
-                Share.share(
-                  {
-                    title: 'Share schedule',
-                    message: params.url,
-                    url: params.url,
-                  },
-                  { dialogTitle: 'Share schedule' },
-                )
+              onPress={() => Share.share(
+                {
+                  title: 'Share schedule',
+                  message: params.url,
+                  url: params.url,
+                },
+                { dialogTitle: 'Share schedule' },
+              )
               }
               background={TouchableNativeFeedback.Ripple('#3333', true)}
             >
@@ -93,7 +92,7 @@ const MoreStack = createStackNavigator(
       },
     },
     Subjects: {
-      screen: props => <Others {...props} type="subjects" />,
+      screen: Others,
     },
     Teachers: {
       screen: props => <Others {...props} type="teachers" />,
@@ -102,7 +101,7 @@ const MoreStack = createStackNavigator(
   {
     navigationOptions: ({ navigation }) => ({
       headerTitle: headerTitle(navigation.state.routeName),
-      headerStyle,
+      headerTitleContainerStyle: headerStyle,
     }),
   },
 );
@@ -155,13 +154,15 @@ export default createStackNavigator(
     TabNavigator,
   },
   {
-    navigationOptions: { header: null },
+    headerMode: 'none',
+
   },
 );
 
 // export default createStackNavigator(
-//   { Settings },
+//   // { Settings },
+//   { ScheduleStack },
 //   {
-//     navigationOptions: { header: null },
+//     headerMode: 'none',
 //   },
 // );
